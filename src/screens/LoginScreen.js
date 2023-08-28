@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const RegisterScreen = () => {
-  const [nombre, setNombre] = useState('');
+const LoginScreen = ({ navigation }) => {
   const [rut, setRut] = useState('');
-  const [correo, setCorreo] = useState('');
+  const [password, setPassword] = useState('');
 
-
-  const handleRegister = () => {
-    // Implementa la lógica para enviar los datos de registro al servidor
+  const handleLogin = () => {
+    // Implementa la lógica para verificar las credenciales de inicio de sesión en el servidor
   };
 
   return (
@@ -17,14 +15,7 @@ const RegisterScreen = () => {
         <View style={styles.logoContainer}>
           <Image source={require('./Logo.png')} style={styles.logoImage} />
         </View>
-        <Text style={styles.title}>Registro de Usuario</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre"
-          placeholderTextColor="#EEEEEE"
-          value={nombre}
-          onChangeText={setNombre}
-        />
+        <Text style={styles.title}>Inicio de Sesión</Text>
         <TextInput
           style={styles.input}
           placeholder="RUT"
@@ -34,18 +25,24 @@ const RegisterScreen = () => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Correo Electrónico"
+          placeholder="Contraseña"
           placeholderTextColor="#EEEEEE"
-          value={correo}
-          onChangeText={setCorreo}
+          secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
         />
-        
-        
         <Button
-          title="Registrarse"
-          onPress={handleRegister}
+          title="Iniciar Sesión"
+          onPress={handleLogin}
           color="#00ADB5"
         />
+
+        <View style={styles.registerContainer}>
+          <Text style={styles.registerText}>¿No tienes cuenta?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Registro')}>
+            <Text style={styles.registerLink}>Regístrate aquí</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -95,6 +92,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     color: '#EEEEEE',
   },
+  registerContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  registerText: {
+    color: '#EEEEEE',
+  },
+  registerLink: {
+    color: '#00ADB5',
+    marginLeft: 5,
+    textDecorationLine: 'underline',
+  },
 });
 
-export default RegisterScreen;
+export default LoginScreen;
