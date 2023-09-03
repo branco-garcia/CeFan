@@ -7,6 +7,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = () => {
     // Implementa la lógica para verificar las credenciales de inicio de sesión en el servidor
+    navigation.navigate('Inicio');
   };
 
   return (
