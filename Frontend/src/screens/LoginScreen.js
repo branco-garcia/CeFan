@@ -3,11 +3,27 @@ import { View, Text, TextInput, Button, Image, StyleSheet, TouchableOpacity } fr
 
 const LoginScreen = ({ navigation }) => {
   const [rut, setRut] = useState('');
-  const [password, setPassword] = useState('');
+  const [contrasena, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Implementa la lógica para verificar las credenciales de inicio de sesión en el servidor
-    navigation.navigate('Inicio');
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://192.168.1.13:3000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rut, contrasena }),
+      });
+  
+      if (response.status === 200) {
+        console.log("bien")
+        navigation.navigate('Inicio');
+      } else {
+        console.error('Error en el inicio de sesión');
+      }
+    } catch (error) {
+      console.error('Error en el inicio de sesión:', error);
+    }
   };
 
   return (
@@ -29,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
           placeholder="Contraseña"
           placeholderTextColor="#EEEEEE"
           secureTextEntry={true}
-          value={password}
+          value={contrasena}
           onChangeText={setPassword}
         />
         <Button

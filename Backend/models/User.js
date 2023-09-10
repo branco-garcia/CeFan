@@ -4,6 +4,9 @@ const userSchema = new mongoose.Schema({
   nombre: String,
   rut: String,
   correo: String,
+  telefono: String, // Agrega el campo de número de teléfono
+  contrasena: String, // Agrega el campo de contraseña
 });
 
-module.exports = mongoose.model('Usuario', userSchema); // Asegúrate de que el nombre del modelo coincida con el de la colección en MongoDB
+module.exports = mongoose.model('Usuario', userSchema);
+

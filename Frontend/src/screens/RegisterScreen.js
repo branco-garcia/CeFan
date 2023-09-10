@@ -8,6 +8,8 @@ const RegisterScreen = () => {
   const [nombre, setNombre] = useState('');
   const [rut, setRut] = useState('');
   const [correo, setCorreo] = useState('');
+  const [telefono, setTelefono] = useState(''); // Nuevo estado para el número de teléfono
+  const [contrasena, setContrasena] = useState(''); // Nuevo estado para la contraseña
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
 
   const handleRegister = async () => {
@@ -16,6 +18,8 @@ const RegisterScreen = () => {
         nombre,
         rut,
         correo,
+        telefono, 
+        contrasena, 
       });
 
       if (response.status === 201) {
@@ -55,6 +59,21 @@ const RegisterScreen = () => {
           placeholderTextColor="#EEEEEE"
           value={correo}
           onChangeText={setCorreo}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Número de Teléfono" // Campo para el número de teléfono
+          placeholderTextColor="#EEEEEE"
+          value={telefono}
+          onChangeText={setTelefono}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña" // Campo para la contraseña
+          placeholderTextColor="#EEEEEE"
+          secureTextEntry={true}
+          value={contrasena}
+          onChangeText={setContrasena}
         />
 
         <Button
@@ -120,7 +139,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     color: '#EEEEEE',
   },
-  // Estilos para la alerta de éxito
   modalContainer: {
     backgroundColor: 'white',
     padding: 20,

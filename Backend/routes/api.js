@@ -4,8 +4,8 @@ const User = require('../models/User');
 
 router.post('/register', async (req, res) => {
   try {
-    const { nombre, rut, correo } = req.body;
-    const user = new User({ nombre, rut, correo });
+    const { nombre, rut, correo, telefono, contrasena } = req.body; // Agrega los campos de telefono y contrasena
+    const user = new User({ nombre, rut, correo, telefono, contrasena }); // Incluye los nuevos campos en el usuario
 
     // Guarda el usuario en la base de datos
     await user.save();
@@ -14,6 +14,21 @@ router.post('/register', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error al registrar usuario' });
+  }
+});
+
+router.post('/login', async (req, res) => {
+  try {
+    const { rut, contrasena } = req.body;
+    const user = await User.findOne({ rut, contrasena });
+    if (user) {
+      res.status(200).json({ message: 'Inicio de sesión exitoso' });
+    } else {
+      res.status(401).json({ message: 'Credenciales inválidas' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error en el inicio de sesión' });
   }
 });
 
