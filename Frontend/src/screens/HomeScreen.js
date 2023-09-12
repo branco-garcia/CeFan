@@ -1,11 +1,27 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
 const { height } = Dimensions.get('window');
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) =>  {
   const [menuVisible, setMenuVisible] = useState(false);
   const animationValue = useRef(new Animated.Value(0)).current;
+  const route = useRoute();
+  const [usuario, setUsuario] = useState('');
+  const [rutt, setRUT] = useState('');
+  
+  useEffect(() => {
+    // Obtener el nombre de usuario de los parámetros de la ruta
+    const nombreUsuario = route.params?.nombre;
+    if (nombreUsuario) {
+      setUsuario(nombreUsuario);
+    }
+    const rutUsuario = route.params?.rut;
+    if (rutUsuario) {
+      setRUT(rutUsuario);
+    }
+  }, [route.params]);
 
   const toggleMenu = () => {
     if (menuVisible) {
@@ -23,6 +39,13 @@ const HomeScreen = () => {
       }).start();
     }
   };
+
+  const navigateToProfile = () => {
+    toggleMenu(); // Cierra el menú antes de navegar
+    navigation.navigate('Perfil', { usuario, rutt }); // Pasa el valor de usuario como parámetro
+  };
+  
+  
 
   const slideInStyle = {
     height: animationValue.interpolate({
@@ -52,11 +75,11 @@ const HomeScreen = () => {
         <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
           <Text style={styles.menuButtonText}>☰</Text>
         </TouchableOpacity>
-        <Text style={styles.welcomeText}>Bienvenido Branco</Text>
+        <Text style={styles.welcomeText}>Bienvenido {usuario}</Text>
       </View>
       <Animated.View style={[styles.menuOptions, menuOptionsStyle, slideInStyle]}>
         <View style={styles.menuOptionContainer}>
-          <TouchableOpacity style={styles.menuOption} onPress={toggleMenu}>
+          <TouchableOpacity style={styles.menuOption} onPress={navigateToProfile}>
             <Text style={styles.menuOptionText}>Perfil</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuOption} onPress={toggleMenu}>
@@ -121,4 +144,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-

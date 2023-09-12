@@ -7,7 +7,7 @@ const LoginScreen = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.1.13:3000/api/login', {
+      const response = await fetch('http://192.168.181.168:3000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -16,8 +16,13 @@ const LoginScreen = ({ navigation }) => {
       });
   
       if (response.status === 200) {
-        console.log("bien")
-        navigation.navigate('Inicio');
+        const data = await response.json(); // Parsea la respuesta JSON
+        const nombreUsuario = data.nombre;
+        const rutUsuario = data.rut; // Obtiene el nombre de usuario desde la respuesta
+  
+        navigation.navigate('Inicio', { nombre: nombreUsuario, rut:rutUsuario}); // Pasa el nombre como parámetro
+        console.log(rutUsuario)
+        console.log (nombreUsuario)
       } else {
         console.error('Error en el inicio de sesión');
       }
@@ -25,6 +30,7 @@ const LoginScreen = ({ navigation }) => {
       console.error('Error en el inicio de sesión:', error);
     }
   };
+  
 
   return (
     <View style={styles.container}>
