@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import axios from 'axios'; // Asegúrate de importar Axios o la biblioteca que utilices para realizar solicitudes HTTP
 
 const ProfileScreen = ({ route }) => {
@@ -10,7 +10,7 @@ const ProfileScreen = ({ route }) => {
     const rutUsuario = route.params.rutt;
 
     // Realiza una solicitud GET al backend para obtener los valores del usuario por su nombre
-    axios.get(`http://192.168.181.168:3000/api/User/${rutUsuario}`)
+    axios.get(`http://192.168.1.136:3000/api/User/${rutUsuario}`)
       .then((response) => {
         setUser(response.data.user);
       })
@@ -19,23 +19,41 @@ const ProfileScreen = ({ route }) => {
       });
   }, [route.params.usuario]);
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Perfil del Usuario</Text>
-      {user ? (
-        <View>
-          <Text style={styles.userInfo}>Nombre: {user.nombre}</Text>
-          <Text style={styles.userInfo}>Rut: {user.rut}</Text>
-          <Text style={styles.userInfo}>Correo: {user.correo}</Text>
-          <Text style={styles.userInfo}>Teléfono: {user.telefono}</Text>
-          {/* Agrega más campos aquí según tus necesidades */}
+  return(
+    <View style={{ flex: 1, backgroundColor: '#252A31' }}>
+      <ScrollView style >
+        <View style = {styles.relleno} >
         </View>
-      ) : (
-        <Text style={styles.loadingText}>Cargando...</Text>
-      )}
+        <View style = {styles.container} >
+          <Image source={require('./Logo.png')} style={styles.profileImage} />
+          <Text style={styles.title}>Perfil del Usuario</Text>
+          {user ? (
+          <View style = {styles.container} > 
+            <Text style={styles.fontPrimario}>{user.nombre}</Text>
+            <View style = {styles.Bordes} >
+              <Text style={styles.fontPrimario}>Documento de identidad RUN:</Text>
+              <Text style = {styles.fontSecundario} >{user.rut}</Text>            
+            </View>
+            <View style = {styles.Bordes} >
+              <Text style={styles.fontPrimario}>Direccion de correo electronico:</Text>
+              <Text style ={styles.fontSecundario} >{user.correo}</Text>
+            </View>
+            <View style = {styles.Bordes} >
+              <Text style={styles.userInfo}>Teléfono: {user.telefono}</Text>
+            </View>
+            {/* Agrega más campos aquí según tus necesidades */}
+          </View>
+        ) : (
+          <Text style={styles.loadingText}>Cargando...</Text>
+        )}
+        </View>
+      </ScrollView>
     </View>
   );
+
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -45,9 +63,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#252A31',
   },
   title: {
+    marginTop: 20,
     fontSize: 24,
     color: '#FFFFFF',
     marginBottom: 20,
+    fontWeight: 'bold'
   },
   userInfo: {
     fontSize: 18,
@@ -58,6 +78,42 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
   },
+
+  //Nuevos estilos
+  profileImage:{
+    width: 150,
+    height: 150,
+    borderRadius:100,
+    marginTop: -70,
+  },
+  relleno: {
+    padding: 10,
+    backgroundColor: '#7F8F9F',
+    height: 100
+  },
+  fontPrimario:{
+    fontSize: 18,
+    color: '#FFFFFF',
+    marginBottom: 10,
+    fontWeight:'bold'
+  },
+  fontSecundario:{
+    fontSize: 18,
+    color: '#FFFFFF',
+    marginBottom: 10,
+  },
+  Bordes:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#7F8F9F',
+    padding: 20,
+    paddingBottom: 22,
+    borderRadius: 10,
+    shadowOpacity: 80,
+    elevation: 15,
+    marginTop: 20
+  }
+
   // Agrega estilos adicionales según sea necesario
 });
 
