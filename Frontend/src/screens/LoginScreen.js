@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     textDecorationLine: 'underline',
   },
+  
 });
 
 export default LoginScreen;

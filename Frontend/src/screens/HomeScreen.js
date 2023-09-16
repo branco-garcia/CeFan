@@ -92,6 +92,8 @@ const HomeScreen = ({ navigation }) => {
         }),
       },
     ],
+    position: 'absolute', // Agregar posición absoluta
+    top: 80,
   };
 
   const menuOptionsStyle = {
@@ -99,17 +101,58 @@ const HomeScreen = ({ navigation }) => {
     borderRadius: 5,
     marginTop: 10,
     overflow: 'hidden',
+    position: 'absolute', // Agregar posición absoluta
+    zIndex: 1, // Establecer el valor de zIndex para controlar la superposición
   };
 
+  
+  const [userInfo, setUserInfo] = useState({
+    weight: '100 Kg',
+    height: '180 Cm',
+    age: '21 Años',
+    gender: 'Masculino',
+  });
+
   return (
+    
+    
+    
+    
     <View style={styles.container}>
       <Image source={require('./Logo.png')} style={styles.logoImage} />
+      
       <View style={styles.header}>
         <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
           <Text style={styles.menuButtonText}>☰</Text>
         </TouchableOpacity>
         <Text style={styles.welcomeText}>Bienvenido {usuario}</Text>
       </View>
+      
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 10 }}>
+          <View style={styles.dataSection}>
+            <Text style={styles.dataTitle}>Peso:</Text>
+            <Text style={styles.dataValue}>{userInfo.weight}</Text>
+          </View>
+          <View style={styles.dataSection}>
+            <Text style={styles.dataTitle}>Edad:</Text>
+            <Text style={styles.dataValue}>{userInfo.age}</Text>
+          </View>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image source={require('./imagenn.png')} style={styles.personImage} />
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 10 }}>
+          <View style={styles.dataSection}>
+            <Text style={styles.dataTitle}>Altura:</Text>
+            <Text style={styles.dataValue}>{userInfo.height}</Text>
+          </View>
+          <View style={styles.dataSection}>
+            <Text style={styles.dataTitle}>Género:</Text>
+            <Text style={styles.dataValue}>{userInfo.gender}</Text>
+          </View>
+        </View>
+      
+      
       <TouchableOpacity style={styles.logoutButton} onPress={showLogoutModal}>
         <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
       </TouchableOpacity>
@@ -129,6 +172,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+      
 
       <Modal isVisible={isLogoutModalVisible}>
         <View style={styles.logoutModal}>
@@ -142,6 +186,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </Modal>
     </View>
+    
   );
 };
 
@@ -172,13 +217,14 @@ const styles = StyleSheet.create({
     padding: 10,
     top: 10,
     left: -15,
+    fontSize: 21,
   },
   menuButtonText: {
     fontSize: 24,
     color: '#00ADB5',
   },
   welcomeText: {
-    fontSize: 18,
+    fontSize: 21,
     marginLeft: 10,
     color: '#FFFFFF',
     top: 10,
@@ -207,7 +253,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 3,
     borderRadius: 5,
-    top: -90,
+    top: -490,
     left: 250,
   },
   logoutButtonText: {
@@ -232,6 +278,38 @@ const styles = StyleSheet.create({
   logoutModalButtonText: {
     fontSize: 18,
     color: 'white',
+  },
+  dataSection: {
+    flex: 1,
+    padding: 10,
+    
+    borderRadius: 1,
+    top: -17,
+    left: -12,
+  },
+  dataTitle: {
+    fontSize: 23,
+    marginBottom: 1,
+    color: '#00ADB5',
+    textAlign: 'left',
+    
+  },
+  dataValue: {
+    fontSize: 23,
+    color: 'white',
+    textAlign: 'right',
+   
+  },
+  personImage: {
+    width: 150,
+    height: 200,
+    resizeMode: 'contain',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    left: 95,
+    top: -14,
+    marginBottom: 10,
   },
 });
 
