@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const WelcomeScreen = ({ navigation }) => {
   const handleLogin = () => {
@@ -15,7 +16,7 @@ const WelcomeScreen = ({ navigation }) => {
         <Text style={styles.buttonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
       <View style={styles.swiperContainer}>
-        <Swiper style={styles.wrapper} loop={true} autoplayDirection={true} height={200} autoplay  >
+        <Swiper style={styles.wrapper} loop={true} autoplayDirection={true} height={200} autoplay>
           <View style={styles.slide}>
             <Image source={require('./imagen1.png')} style={styles.slideImage} />
           </View>
@@ -28,8 +29,21 @@ const WelcomeScreen = ({ navigation }) => {
         </Swiper>
       </View>
       <Text style={styles.description}>
-      ¡Adelante, a disfrutar de una experiencia única y cuida tu tiempo!
+        ¡Adelante, a disfrutar de una experiencia única y cuida tu tiempo!
       </Text>
+
+      {/* Agregar iconos de redes sociales */}
+      <View style={styles.socialIconsContainer}>
+        <TouchableOpacity>
+          <Icon name="facebook" size={30} color="#1877f2" style={styles.socialIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="twitter" size={30} color="#1da1f2" style={styles.socialIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="instagram" size={30} color="#e4405f" style={styles.socialIcon} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -40,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#252A31',
   },
   swiperContainer: {
-    height: 200, 
+    height: 200,
     top: 150,
   },
   wrapper: {},
@@ -79,7 +93,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     fontSize: 30,
     color: '#00ADB5',
-    top: 250,
+    top: 220,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -95,6 +109,15 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  socialIconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 300,
+  },
+  socialIcon: {
+    marginHorizontal: 10,
   },
 });
 

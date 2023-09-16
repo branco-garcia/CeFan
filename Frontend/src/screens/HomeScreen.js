@@ -1,18 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, BackHandler, Image } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import Modal from 'react-native-modal'; 
 
 const { height } = Dimensions.get('window');
 
-const HomeScreen = ({ navigation }) =>  {
+const HomeScreen = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const animationValue = useRef(new Animated.Value(0)).current;
   const route = useRoute();
+
   const [usuario, setUsuario] = useState('');
   const [rutt, setRUT] = useState('');
-  
+
+  const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
+  const [confirmedLogout, setConfirmedLogout] = useState(false);
+
   useEffect(() => {
-    // Obtener el nombre de usuario de los parámetros de la ruta
     const nombreUsuario = route.params?.nombre;
     if (nombreUsuario) {
       setUsuario(nombreUsuario);
@@ -40,12 +44,40 @@ const HomeScreen = ({ navigation }) =>  {
     }
   };
 
-  const navigateToProfile = () => {
-    toggleMenu(); // Cierra el menú antes de navegar
-    navigation.navigate('Perfil', { usuario, rutt }); // Pasa el valor de usuario como parámetro
+  const handleBackButton = () => {
+    showLogoutModal(); 
+    return true; 
   };
-  
-  
+
+  const navigateToProfile = () => {
+    toggleMenu();
+    navigation.navigate('Perfil', { usuario, rutt });
+  };
+
+  const showLogoutModal = () => {
+    setLogoutModalVisible(true);
+  };
+
+  const hideLogoutModal = () => {
+    setLogoutModalVisible(false);
+  };
+
+  const confirmLogout = () => {
+    setConfirmedLogout(true);
+    hideLogoutModal();
+  };
+
+  useEffect(() => {
+    
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+    return () => backHandler.remove();
+  }, []);
+
+  useEffect(() => {
+    if (confirmedLogout) {
+      navigation.navigate('Bienvenida'); 
+    }
+  }, [confirmedLogout]);
 
   const slideInStyle = {
     height: animationValue.interpolate({
@@ -71,12 +103,16 @@ const HomeScreen = ({ navigation }) =>  {
 
   return (
     <View style={styles.container}>
+      <Image source={require('./Logo.png')} style={styles.logoImage} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
           <Text style={styles.menuButtonText}>☰</Text>
         </TouchableOpacity>
         <Text style={styles.welcomeText}>Bienvenido {usuario}</Text>
       </View>
+      <TouchableOpacity style={styles.logoutButton} onPress={showLogoutModal}>
+        <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
+      </TouchableOpacity>
       <Animated.View style={[styles.menuOptions, menuOptionsStyle, slideInStyle]}>
         <View style={styles.menuOptionContainer}>
           <TouchableOpacity style={styles.menuOption} onPress={navigateToProfile}>
@@ -93,6 +129,18 @@ const HomeScreen = ({ navigation }) =>  {
           </TouchableOpacity>
         </View>
       </Animated.View>
+
+      <Modal isVisible={isLogoutModalVisible}>
+        <View style={styles.logoutModal}>
+          <Text style={styles.logoutModalText}>¿Estás seguro de que quieres cerrar sesión?</Text>
+          <TouchableOpacity style={styles.logoutModalButton} onPress={confirmLogout}>
+            <Text style={styles.logoutModalButtonText}>Sí</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.logoutModalButton} onPress={hideLogoutModal}>
+            <Text style={styles.logoutModalButtonText}>No</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -106,6 +154,15 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     backgroundColor: '#252A31',
   },
+  logoImage: {
+    width: 56,
+    height: 56,
+    borderRadius: 60,
+    resizeMode: 'cover',
+    position: 'absolute',
+    top: 5,
+    left: 10,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -113,6 +170,8 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: 10,
+    top: 10,
+    left: -15,
   },
   menuButtonText: {
     fontSize: 24,
@@ -122,6 +181,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 10,
     color: '#FFFFFF',
+    top: 10,
+    left: -25,
   },
   menuOptions: {
     flexDirection: 'row',
@@ -138,6 +199,37 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   menuOptionText: {
+    fontSize: 18,
+    color: 'white',
+  },
+  logoutButton: {
+    backgroundColor: '#00ADB5',
+    paddingVertical: 5,
+    paddingHorizontal: 3,
+    borderRadius: 5,
+    top: -90,
+    left: 250,
+  },
+  logoutButtonText: {
+    fontSize: 18,
+    color: 'white',
+  },
+  logoutModal: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 5,
+  },
+  logoutModalText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  logoutModalButton: {
+    backgroundColor: '#00ADB5',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  logoutModalButtonText: {
     fontSize: 18,
     color: 'white',
   },

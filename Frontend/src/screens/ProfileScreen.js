@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import axios from 'axios'; // Asegúrate de importar Axios o la biblioteca que utilices para realizar solicitudes HTTP
+import { View, Text, StyleSheet, Image, ScrollView, BackHandler} from 'react-native';
+import axios from 'axios'; 
 
 const ProfileScreen = ({ route }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Obtén el nombre del usuario de la variable usuario
+    
     const rutUsuario = route.params.rutt;
 
-    // Realiza una solicitud GET al backend para obtener los valores del usuario por su nombre
-    axios.get(`http://192.168.1.136:3000/api/User/${rutUsuario}`)
+   
+    axios.get(`http://192.168.1.9:3000/api/User/${rutUsuario}`)
       .then((response) => {
         setUser(response.data.user);
       })
@@ -18,6 +18,16 @@ const ProfileScreen = ({ route }) => {
         console.error(error);
       });
   }, [route.params.usuario]);
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      return true;
+    });
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
+  
 
   return(
     <View style={{ flex: 1, backgroundColor: '#252A31' }}>
