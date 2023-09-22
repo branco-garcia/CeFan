@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, BackHandler, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, BackHandler, Image, TextInput  } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Modal from 'react-native-modal'; 
 
@@ -15,6 +15,7 @@ const HomeScreen = ({ navigation }) => {
 
   const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
   const [confirmedLogout, setConfirmedLogout] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
   useEffect(() => {
     const nombreUsuario = route.params?.nombre;
@@ -57,6 +58,8 @@ const HomeScreen = ({ navigation }) => {
   const showLogoutModal = () => {
     setLogoutModalVisible(true);
   };
+  
+  
 
   const hideLogoutModal = () => {
     setLogoutModalVisible(false);
@@ -104,12 +107,32 @@ const HomeScreen = ({ navigation }) => {
     position: 'absolute', // Agregar posición absoluta
     zIndex: 1, // Establecer el valor de zIndex para controlar la superposición
   };
-
+  const [editedUserInfo, setEditedUserInfo] = useState({
+    weight: '',
+    height: '',
+    age: '',
+    gender: '',
+  });
+  const showEditModal = () => {
+    setEditedUserInfo({
+      weight: userInfo.weight,
+      height: userInfo.height,
+      age: userInfo.age,
+      gender: userInfo.gender,
+    });
+    setIsEditModalVisible(true);
+  };
+  const saveChanges = () => {
+    // Realiza aquí alguna validación de datos si es necesario
+    setUserInfo(editedUserInfo);
+    setIsEditModalVisible(false);
+  };
+      
   
   const [userInfo, setUserInfo] = useState({
-    weight: '100 Kg',
-    height: '180 Cm',
-    age: '21 Años',
+    weight: '100',
+    height: '180',
+    age: '21',
     gender: 'Masculino',
   });
 
@@ -131,11 +154,11 @@ const HomeScreen = ({ navigation }) => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 10 }}>
           <View style={styles.dataSection}>
             <Text style={styles.dataTitle}>Peso:</Text>
-            <Text style={styles.dataValue}>{userInfo.weight}</Text>
+            <Text style={styles.dataValue}>{userInfo.weight} kg</Text>
           </View>
           <View style={styles.dataSection}>
             <Text style={styles.dataTitle}>Edad:</Text>
-            <Text style={styles.dataValue}>{userInfo.age}</Text>
+            <Text style={styles.dataValue}>{userInfo.age} Años</Text>
           </View>
         </View>
         <View style={styles.imageContainer}>
@@ -144,7 +167,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: 10 }}>
           <View style={styles.dataSection}>
             <Text style={styles.dataTitle}>Altura:</Text>
-            <Text style={styles.dataValue}>{userInfo.height}</Text>
+            <Text style={styles.dataValue}>{userInfo.height} Cm</Text>
           </View>
           <View style={styles.dataSection}>
             <Text style={styles.dataTitle}>Género:</Text>
@@ -172,6 +195,46 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+
+<TouchableOpacity style={styles.editButton} onPress={showEditModal}>
+  <Text style={styles.editButtonText}>Editar Datos</Text>
+</TouchableOpacity>
+
+<Modal isVisible={isEditModalVisible}>
+  <View style={styles.editModal}>
+    <Text style={styles.editModalTitle}>Editar Datos</Text>
+    <TextInput
+      style={styles.editModalInput}
+      placeholder="Peso"
+      value={editedUserInfo.weight}
+      onChangeText={(text) => setEditedUserInfo({ ...editedUserInfo, weight: text })}
+    />
+    <TextInput
+      style={styles.editModalInput}
+      placeholder="Altura"
+      value={editedUserInfo.height}
+      onChangeText={(text) => setEditedUserInfo({ ...editedUserInfo, height: text })}
+    />
+    <TextInput
+      style={styles.editModalInput}
+      placeholder="Edad"
+      value={editedUserInfo.age}
+      onChangeText={(text) => setEditedUserInfo({ ...editedUserInfo, age: text })}
+    />
+    <TextInput
+      style={styles.editModalInput}
+      placeholder="Género"
+      value={editedUserInfo.gender}
+      onChangeText={(text) => setEditedUserInfo({ ...editedUserInfo, gender: text })}
+    />
+    <TouchableOpacity style={styles.saveButton} onPress={saveChanges}>
+      <Text style={styles.saveButtonText}>Guardar</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.cancelButton} onPress={() => setIsEditModalVisible(false)}>
+      <Text style={styles.cancelButtonText}>Cancelar</Text>
+    </TouchableOpacity>
+  </View>
+</Modal>
       
 
       <Modal isVisible={isLogoutModalVisible}>
@@ -311,6 +374,60 @@ const styles = StyleSheet.create({
     top: -14,
     marginBottom: 10,
   },
+  editButton: {
+    backgroundColor: '#00ADB5',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  editButtonText: {
+    fontSize: 18,
+    color: 'white',
+  },
+  editModal: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 5,
+  },
+  editModalTitle: {
+    fontSize: 24,
+    marginBottom: 20,
+    fontWeight: 'bold',
+  },
+  editModalInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  saveButton: {
+    backgroundColor: '#00ADB5',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  saveButtonText: {
+    fontSize: 18,
+    color: 'white',
+  },
+  cancelButton: {
+    backgroundColor: 'gray',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  cancelButtonText: {
+    fontSize: 18,
+    color: 'white',
+  },
 });
 
-export default HomeScreen;
+export default HomeScreen; 
