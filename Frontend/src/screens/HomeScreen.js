@@ -137,10 +137,6 @@ const HomeScreen = ({ navigation }) => {
   });
 
   return (
-    
-    
-    
-    
     <View style={styles.container}>
       <Image source={require('./Logo.png')} style={styles.logoImage} />
       
@@ -235,7 +231,7 @@ const HomeScreen = ({ navigation }) => {
     </TouchableOpacity>
   </View>
 </Modal>
-      
+
 
       <Modal isVisible={isLogoutModalVisible}>
         <View style={styles.logoutModal}>
@@ -336,9 +332,10 @@ const styles = StyleSheet.create({
   },
   logoutModalButton: {
     backgroundColor: '#00ADB5',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 25,
     borderRadius: 5,
+    marginVertical: 5,
   },
   logoutModalButtonText: {
     fontSize: 18,

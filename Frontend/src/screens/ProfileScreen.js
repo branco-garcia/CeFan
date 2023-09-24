@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, BackHandler} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, BackHandler,} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'; 
 
+
 const ProfileScreen = ({ route }) => {
+  const navigation = useNavigation();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -18,15 +21,18 @@ const ProfileScreen = ({ route }) => {
         console.error(error);
       });
   }, [route.params.usuario]);
+
+  
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.goBack(); // Esto retrocede a la pantalla anterior
       return true;
     });
 
     return () => {
       backHandler.remove();
     };
-  }, []);
+  }, [navigation]);
   
 
   return(

@@ -14,7 +14,7 @@ const RegisterScreen = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('http://192.168.1.136:3000/api/register', {
+      const response = await axios.post('http://45.236.129.38:3000/api/register', {
         nombre,
         rut,
         correo,
