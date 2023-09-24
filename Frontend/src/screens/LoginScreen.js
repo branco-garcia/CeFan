@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import Modal from 'react-native-modal';
 
 const LoginScreen = ({ navigation }) => {
   const [rut, setRut] = useState('');
   const [contrasena, setPassword] = useState('');
-
+  const [errorModalVisible, setErrorModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const handleLogin = async () => {
     try {
       const response = await fetch('http://45.236.129.38:3000/api/login', {
@@ -16,15 +18,14 @@ const LoginScreen = ({ navigation }) => {
       });
   
       if (response.status === 200) {
-        const data = await response.json(); // Parsea la respuesta JSON
+        // Inicio de sesión exitoso
+        const data = await response.json();
         const nombreUsuario = data.nombre;
-        const rutUsuario = data.rut; // Obtiene el nombre de usuario desde la respuesta
-  
-        navigation.navigate('Inicio', { nombre: nombreUsuario, rut:rutUsuario}); // Pasa el nombre como parámetro
-        console.log(rutUsuario)
-        console.log (nombreUsuario)
+        const rutUsuario = data.rut;
+        navigation.navigate('Inicio', { nombre: nombreUsuario, rut: rutUsuario });
       } else {
-        console.error('Error en el inicio de sesión');
+        setErrorModalVisible(true);
+        setErrorMessage('Credenciales incorrectas. Inténtelo de nuevo.');
       }
     } catch (error) {
       console.error('Error en el inicio de sesión:', error);
@@ -59,6 +60,25 @@ const LoginScreen = ({ navigation }) => {
           onPress={handleLogin}
           color="#00ADB5"
         />
+
+        <Modal
+          visible={errorModalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setErrorModalVisible(false)}
+        >
+          <View style={styles.errorModal}>
+            <View style={styles.errorModalContent}>
+              <Text style={styles.errorText}>{errorMessage}</Text>
+              <TouchableOpacity
+                style={styles.errorButton}
+                onPress={() => setErrorModalVisible(false)}
+              >
+                <Text style={styles.errorButtonText}>Cerrar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
         <View style={styles.registerContainer}>
           <Text style={styles.registerText}>¿No tienes cuenta?</Text>
@@ -129,6 +149,33 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     textDecorationLine: 'underline',
   },
+  errorModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  errorModalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  errorButton: {
+    backgroundColor: '#00ADB5',
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 5,
+  },
+  errorButtonText: {
+    fontSize: 18,
+    color: 'white',
+  },
+  
   
 });
 
