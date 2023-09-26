@@ -4,9 +4,8 @@ const userSchema = new mongoose.Schema({
   nombre: String,
   rut: String,
   correo: String,
-  telefono: String, // Agrega el campo de número de teléfono
-  contrasena: String, // Agrega el campo de contraseña
+  telefono: String,
+  contrasena: String,
 });
 
 module.exports = mongoose.model('Usuario', userSchema);
-

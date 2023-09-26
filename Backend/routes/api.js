@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const UserData = require('../models/userData');
 
 router.post('/register', async (req, res) => {
   try {
@@ -48,5 +49,33 @@ router.get('/User/:rut', async (req, res) => {
     res.status(500).json({ message: 'Error al obtener el usuario' });
   }
 });
+
+router.post('/saveUserData', async (req, res) => {
+  try {
+    const { rut, weight, age, height, gender } = req.body;
+
+    // Verificar si ya existe un registro con el mismo rut
+    const existingUserData = await UserData.findOne({ rut });
+
+    if (existingUserData) {
+      // Si existe, actualiza los valores en lugar de crear un nuevo registro
+      existingUserData.weight = weight;
+      existingUserData.age = age;
+      existingUserData.height = height;
+      existingUserData.gender = gender;
+      await existingUserData.save();
+      res.status(200).json({ message: 'Datos del usuario actualizados con éxito' });
+    } else {
+      // Si no existe, crea un nuevo registro
+      const userData = new UserData({ rut, weight, age, height, gender });
+      await userData.save();
+      res.status(201).json({ message: 'Datos del usuario guardados con éxito' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al guardar o actualizar los datos del usuario' });
+  }
+});
+
 
 module.exports = router;

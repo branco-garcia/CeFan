@@ -122,19 +122,48 @@ const HomeScreen = ({ navigation }) => {
     });
     setIsEditModalVisible(true);
   };
-  const saveChanges = () => {
-    // Realiza aquí alguna validación de datos si es necesario
-    setUserInfo(editedUserInfo);
-    setIsEditModalVisible(false);
-  };
-      
+  const saveChanges = async () => {
+    try {
+      if (!editedUserInfo.weight || !editedUserInfo.age || !editedUserInfo.height || !editedUserInfo.gender) {
+        alert('Por favor, completa todos los campos.');
+        return; 
+      }
+
+      const response = await fetch('http://192.168.45.168:3000/api/saveUserData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          rut: rutt, 
+          weight: editedUserInfo.weight,
+          age: editedUserInfo.age,
+          height: editedUserInfo.height,
+          gender: editedUserInfo.gender,
+        }),
+      });
+      console.log(rutt)
+      console.log(editedUserInfo.weight)
   
+      if (response.ok) {
+        setUserInfo(editedUserInfo); 
+        setIsEditModalVisible(false); 
+      } else {
+        alert('Hubo un error al guardar los datos en el servidor.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Ocurrió un error de red al intentar guardar los datos.');
+    }
+  };
+
   const [userInfo, setUserInfo] = useState({
-    weight: '100',
-    height: '180',
-    age: '21',
+    weight: '20',
+    height: '30',
+    age: '60',
     gender: 'Masculino',
   });
+
 
   return (
     <View style={styles.container}>
@@ -429,4 +458,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen; 
+export default HomeScreen;
