@@ -13,7 +13,7 @@ const ProfileScreen = ({ route }) => {
     const rutUsuario = route.params.rutt;
 
    
-    axios.get(`http://192.168.45.168:3000/api/User/${rutUsuario}`)
+    axios.get(`http://45.236.129.38:3000/api/User/${rutUsuario}`)
       .then((response) => {
         setUser(response.data.user);
       })

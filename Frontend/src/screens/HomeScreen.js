@@ -3,6 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, BackHan
 import { useRoute } from '@react-navigation/native';
 import Modal from 'react-native-modal'; 
 
+import {
+  evaluarIMC,
+  calcularIMC,
+  calcularTMB,
+  calcularDiferenciaPesoIdeal,
+} from './calculosIMC'; 
+
+
 const { height } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }) => {
@@ -27,6 +35,35 @@ const HomeScreen = ({ navigation }) => {
       setRUT(rutUsuario);
     }
   }, [route.params]);
+
+
+  const [resultadoCalculo, setResultadoCalculo] = useState(null);
+
+  const calcularResultados = () => {
+    const peso = parseFloat(userInfo.weight);
+    const alturaCm = parseFloat(userInfo.height);
+  
+    const imc = calcularIMC(peso, alturaCm);
+  
+    const genero = userInfo.gender.toLowerCase();
+    const edad = parseInt(userInfo.age);
+    const tmb = calcularTMB(peso, alturaCm, edad, genero);
+  
+    const diferenciaPesoIdeal = calcularDiferenciaPesoIdeal(peso, alturaCm);
+  
+    setResultadoCalculo({
+      imc,
+      evaluarIMC: evaluarIMC(imc),
+      tmb: tmb !== null ? tmb.toFixed(2) : null,
+      pesoIdeal: diferenciaPesoIdeal ? diferenciaPesoIdeal[0].toFixed(2) : null,
+      diferenciaPesoIdeal: diferenciaPesoIdeal ? diferenciaPesoIdeal[1].toFixed(2) : null,
+    });
+  };
+  
+  useEffect(() => {
+    calcularResultados();
+  }, [userInfo]);
+  
 
   const toggleMenu = () => {
     if (menuVisible) {
@@ -129,7 +166,7 @@ const HomeScreen = ({ navigation }) => {
         return; 
       }
 
-      const response = await fetch('http://192.168.45.168:3000/api/saveUserData', {
+      const response = await fetch('http://45.236.129.38:3000/api/saveUserData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -158,10 +195,10 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const [userInfo, setUserInfo] = useState({
-    weight: '20',
-    height: '30',
-    age: '60',
-    gender: 'Masculino',
+    weight: '82',
+    height: '180',
+    age: '21',
+    gender: 'masculino',
   });
 
 
@@ -260,6 +297,35 @@ const HomeScreen = ({ navigation }) => {
     </TouchableOpacity>
   </View>
 </Modal>
+
+<Text style={styles.calculadoraIMCText}>Calculadora IMC</Text>
+
+<View style={styles.resultadosContainer}>
+        {resultadoCalculo && (
+          <>
+            <View style={styles.resultadoItem}>
+              <Text style={styles.resultadoTexto}>Resultado:</Text>
+              <Text style={styles.resultadoTexto}>IMC: {resultadoCalculo.imc}</Text>
+            </View>
+
+            <View style={styles.resultadoItem}>
+              <Text style={styles.resultadoTexto}>Clasificación IMC: {resultadoCalculo.evaluarIMC}</Text>
+            </View>
+
+            <View style={styles.resultadoItem}>
+              <Text style={styles.resultadoTexto}>TMB: {resultadoCalculo.tmb}</Text>
+            </View>
+
+            <View style={styles.resultadoItem}>
+              <Text style={styles.resultadoTexto}>Peso Ideal: {resultadoCalculo.pesoIdeal}</Text>
+            </View>
+
+            <View style={styles.resultadoItem}>
+              <Text style={styles.resultadoTexto}>Diferencia de Peso Ideal: {resultadoCalculo.diferenciaPesoIdeal}</Text>
+            </View>
+          </>
+        )}
+      </View>
 
 
       <Modal isVisible={isLogoutModalVisible}>
@@ -404,11 +470,13 @@ const styles = StyleSheet.create({
   },
   editButton: {
     backgroundColor: '#00ADB5',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 5,
-    marginTop: 20,
+    marginTop: 16,
     alignSelf: 'center',
+    top: -50,
+    left: 115,
   },
   editButtonText: {
     fontSize: 18,
@@ -455,6 +523,30 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     fontSize: 18,
     color: 'white',
+  },
+  calculadoraIMCText: {
+    fontSize: 25,
+    color: '#00ADB5',
+    alignSelf: 'center',
+    marginTop: 10,
+    top: -48,
+  },
+
+  resultadosContainer: {
+    backgroundColor: '#FFFFFF', 
+    padding: 10,
+    borderRadius: 1,
+    marginTop: 1,
+    top:-50,
+  },
+  
+  resultadoItem: {
+    marginBottom: 1, 
+  },
+
+  resultadoTexto: {
+    fontSize: 18,
+    color: '#333', 
   },
 });
 
