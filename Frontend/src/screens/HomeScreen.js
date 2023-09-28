@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, BackHandler, Image, TextInput  } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, BackHandler, Image, TextInput, ScrollView  } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Modal from 'react-native-modal'; 
 
@@ -203,6 +203,7 @@ const HomeScreen = ({ navigation }) => {
 
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <Image source={require('./Logo.png')} style={styles.logoImage} />
       
@@ -298,30 +299,37 @@ const HomeScreen = ({ navigation }) => {
   </View>
 </Modal>
 
+{/* Calculadora */}
 <Text style={styles.calculadoraIMCText}>Calculadora IMC</Text>
 
 <View style={styles.resultadosContainer}>
         {resultadoCalculo && (
           <>
             <View style={styles.resultadoItem}>
-              <Text style={styles.resultadoTexto}>Resultado:</Text>
-              <Text style={styles.resultadoTexto}>IMC: {resultadoCalculo.imc}</Text>
+            <Text style={{...styles.resultadoTexto, textAlign: 'center', fontSize: 22,fontWeight: 'bold',}}>Resultado</Text>
+              <Text style = {styles.resultadoTexto}>Indice de Masa Corporal:</Text>
+              <Text style = {styles.containerResult}> {resultadoCalculo.imc} </Text>
             </View>
 
             <View style={styles.resultadoItem}>
-              <Text style={styles.resultadoTexto}>Clasificación IMC: {resultadoCalculo.evaluarIMC}</Text>
+              <Text style={styles.resultadoTexto}>Clasificación IMC:</Text>
+              <Text style = {styles.containerResult}>{resultadoCalculo.evaluarIMC}</Text>
             </View>
 
             <View style={styles.resultadoItem}>
-              <Text style={styles.resultadoTexto}>TMB: {resultadoCalculo.tmb}</Text>
+              {/* TMB */}
+              <Text style={styles.resultadoTexto}>Tasa de Metabolismo Basal:</Text>
+              <Text style = {styles.containerResult}>{resultadoCalculo.tmb}</Text>
             </View>
 
             <View style={styles.resultadoItem}>
-              <Text style={styles.resultadoTexto}>Peso Ideal: {resultadoCalculo.pesoIdeal}</Text>
+              <Text style={styles.resultadoTexto}>Peso Ideal:</Text>
+              <Text style = {styles.containerResult}>{resultadoCalculo.pesoIdeal}</Text>
             </View>
 
             <View style={styles.resultadoItem}>
-              <Text style={styles.resultadoTexto}>Diferencia de Peso Ideal: {resultadoCalculo.diferenciaPesoIdeal}</Text>
+              <Text style={styles.resultadoTexto}>Diferencia de Peso Ideal:</Text>
+              <Text style = {styles.containerResult}>{resultadoCalculo.diferenciaPesoIdeal}</Text>
             </View>
           </>
         )}
@@ -340,7 +348,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </Modal>
     </View>
-    
+    </ScrollView>
   );
 };
 
@@ -439,7 +447,6 @@ const styles = StyleSheet.create({
   dataSection: {
     flex: 1,
     padding: 10,
-    
     borderRadius: 1,
     top: -17,
     left: -12,
@@ -533,20 +540,31 @@ const styles = StyleSheet.create({
   },
 
   resultadosContainer: {
-    backgroundColor: '#FFFFFF', 
+    borderRadius: 5,
+    alignSelf: 'center',
+    backgroundColor: '#08c75b', 
     padding: 10,
-    borderRadius: 1,
     marginTop: 1,
     top:-50,
   },
   
   resultadoItem: {
-    marginBottom: 1, 
+    marginBottom: 1,
   },
 
   resultadoTexto: {
-    fontSize: 18,
-    color: '#333', 
+    alignSelf: 'center',
+    color:'white',
+    //Usar 18, si hay otro numero es de prueba
+    fontSize: 20, 
+  },
+
+  containerResult: {
+    borderRadius: 5,
+    alignSelf: 'center',
+    backgroundColor: '#00ADB5',
+    padding: 5,
+    fontSize: 18, 
   },
 });
 
