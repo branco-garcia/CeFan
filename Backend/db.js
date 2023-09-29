@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const mongoURI = 'mongodb://branco:1234@45.236.129.38:27017'; // Coloca aquí tu URI de MongoDB
+const mongoURI = 'mongodb://branco:1234@45.236.129.38:27017'; 
 
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,

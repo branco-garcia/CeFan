@@ -92,6 +92,11 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('Perfil', { usuario, rutt });
   };
 
+  const navigateToHorasMedicas = () => {
+    toggleMenu();
+    navigation.navigate('HorasMedicas', { usuario, rutt });
+  };
+
   const showLogoutModal = () => {
     setLogoutModalVisible(true);
   };
@@ -166,7 +171,7 @@ const HomeScreen = ({ navigation }) => {
         return; 
       }
 
-      const response = await fetch('http://45.236.129.38:3000/api/saveUserData', {
+      const response = await fetch('http://192.168.1.8:3000/api/saveUserData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -247,7 +252,7 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.menuOption} onPress={navigateToProfile}>
             <Text style={styles.menuOptionText}>Perfil</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menuOption} onPress={toggleMenu}>
+          <TouchableOpacity style={styles.menuOption} onPress={navigateToHorasMedicas}>
             <Text style={styles.menuOptionText}>Horas Medicas</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuOption} onPress={toggleMenu}>
@@ -308,28 +313,28 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.resultadoItem}>
             <Text style={{...styles.resultadoTexto, textAlign: 'center', fontSize: 22,fontWeight: 'bold',}}>Resultado</Text>
               <Text style = {styles.resultadoTexto}>Indice de Masa Corporal:</Text>
-              <Text style = {styles.containerResult}> {resultadoCalculo.imc} </Text>
+              <Text style = {[styles.containerResult, { color: 'black' }]}> {resultadoCalculo.imc} IMC</Text>
             </View>
 
             <View style={styles.resultadoItem}>
               <Text style={styles.resultadoTexto}>Clasificación IMC:</Text>
-              <Text style = {styles.containerResult}>{resultadoCalculo.evaluarIMC}</Text>
+              <Text style = {[styles.containerResult, { color: 'black' }]}>{resultadoCalculo.evaluarIMC}</Text>
             </View>
 
             <View style={styles.resultadoItem}>
               {/* TMB */}
               <Text style={styles.resultadoTexto}>Tasa de Metabolismo Basal:</Text>
-              <Text style = {styles.containerResult}>{resultadoCalculo.tmb}</Text>
+              <Text style = {[styles.containerResult, { color: 'black' }]}>{resultadoCalculo.tmb} Calorias</Text>
             </View>
 
             <View style={styles.resultadoItem}>
               <Text style={styles.resultadoTexto}>Peso Ideal:</Text>
-              <Text style = {styles.containerResult}>{resultadoCalculo.pesoIdeal}</Text>
+              <Text style = {[styles.containerResult, { color: 'black' }]}>{resultadoCalculo.pesoIdeal} Kg</Text>
             </View>
 
             <View style={styles.resultadoItem}>
               <Text style={styles.resultadoTexto}>Diferencia de Peso Ideal:</Text>
-              <Text style = {styles.containerResult}>{resultadoCalculo.diferenciaPesoIdeal}</Text>
+              <Text style={[styles.containerResult, { color: 'black' }]}>{resultadoCalculo.diferenciaPesoIdeal} kg</Text>
             </View>
           </>
         )}
@@ -452,14 +457,14 @@ const styles = StyleSheet.create({
     left: -12,
   },
   dataTitle: {
-    fontSize: 23,
+    fontSize: 26,
     marginBottom: 1,
     color: '#00ADB5',
     textAlign: 'left',
     
   },
   dataValue: {
-    fontSize: 23,
+    fontSize: 26,
     color: 'white',
     textAlign: 'right',
    
@@ -540,29 +545,31 @@ const styles = StyleSheet.create({
   },
 
   resultadosContainer: {
-    borderRadius: 5,
+    borderRadius: 30,
     alignSelf: 'center',
-    backgroundColor: '#08c75b', 
+    backgroundColor: '#00ADB5',
     padding: 10,
-    marginTop: 1,
-    top:-50,
+    marginTop: 2,
+    top: -50,
+    width: '80%', 
+    marginHorizontal: '10px', 
   },
   
   resultadoItem: {
     marginBottom: 1,
   },
 
+
   resultadoTexto: {
     alignSelf: 'center',
     color:'white',
-    //Usar 18, si hay otro numero es de prueba
     fontSize: 20, 
   },
 
   containerResult: {
     borderRadius: 5,
     alignSelf: 'center',
-    backgroundColor: '#00ADB5',
+    backgroundColor: 'white',
     padding: 5,
     fontSize: 18, 
   },

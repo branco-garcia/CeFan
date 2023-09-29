@@ -6,6 +6,7 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import HorasMedicasScreen from './src/screens/HorasMedicasScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ function App() {
         <Stack.Screen name="Registro" component={RegisterScreen} />
         <Stack.Screen name="Inicio" component={HomeScreen} />
         <Stack.Screen name="Perfil" component={ProfileScreen} />
+        <Stack.Screen name="HorasMedicas" component={HorasMedicasScreen} />
         {/* Agrega más pantallas aquí si es necesario */}
       </Stack.Navigator>
     </NavigationContainer>
