@@ -116,7 +116,6 @@ router.get('/citas/disponibles/:rutt', async (req, res) => {
   try {
     const rutPaciente = req.params.rutt;
 
-    // Consulta las citas asociadas con el rut del paciente
     const citasDelPaciente = await Cita.find({ pacienteRut: rutPaciente });
 
     if (citasDelPaciente.length === 0) {
@@ -134,7 +133,6 @@ router.get('/evoluciones/:rutt', async (req, res) => {
   try {
     const rutPaciente = req.params.rutt;
 
-    // Consulta las evoluciones médicas asociadas con el rut del paciente
     const evolucionesDelPaciente = await Evolucion.find({ pacienteRut: rutPaciente });
 
     if (evolucionesDelPaciente.length === 0) {
@@ -145,6 +143,22 @@ router.get('/evoluciones/:rutt', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error al obtener evoluciones médicas asociadas al paciente' });
+  }
+});
+
+router.get('/userData/:rutt', async (req, res) => {
+  try {
+    const rut = req.params.rutt; 
+    const userData = await UserData.findOne({ rut });
+
+    if (userData) {
+      res.status(200).json({ userData });
+    } else {
+      res.status(404).json({ message: 'Error al obtener los datos de usuario' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '' });
   }
 });
 

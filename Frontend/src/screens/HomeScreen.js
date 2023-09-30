@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Dimensions, BackHandler, Image, TextInput, ScrollView  } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Modal from 'react-native-modal'; 
+import axios from 'axios';
 
 import {
   evaluarIMC,
@@ -17,6 +18,9 @@ const HomeScreen = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const animationValue = useRef(new Animated.Value(0)).current;
   const route = useRoute();
+
+  const [welcomeModalVisible, setWelcomeModalVisible] = useState(false);
+  const [welcomeMessage, setWelcomeMessage] = useState("");
 
   const [usuario, setUsuario] = useState('');
   const [rutt, setRUT] = useState('');
@@ -35,31 +39,8 @@ const HomeScreen = ({ navigation }) => {
       setRUT(rutUsuario);
     }
   }, [route.params]);
+ 
 
-
-  const [resultadoCalculo, setResultadoCalculo] = useState(null);
-
-  const calcularResultados = () => {
-    const peso = parseFloat(userInfo.weight);
-    const alturaCm = parseFloat(userInfo.height);
-  
-    const imc = calcularIMC(peso, alturaCm);
-  
-    const genero = userInfo.gender.toLowerCase();
-    const edad = parseInt(userInfo.age);
-    const tmb = calcularTMB(peso, alturaCm, edad, genero);
-  
-    const diferenciaPesoIdeal = calcularDiferenciaPesoIdeal(peso, alturaCm);
-  
-    setResultadoCalculo({
-      imc,
-      evaluarIMC: evaluarIMC(imc),
-      tmb: tmb !== null ? tmb.toFixed(2) : null,
-      pesoIdeal: diferenciaPesoIdeal ? diferenciaPesoIdeal[0].toFixed(2) : null,
-      diferenciaPesoIdeal: diferenciaPesoIdeal ? diferenciaPesoIdeal[1].toFixed(2) : null,
-    });
-  };
-  
   useEffect(() => {
     calcularResultados();
   }, [userInfo]);
@@ -159,6 +140,7 @@ const HomeScreen = ({ navigation }) => {
     position: 'absolute', // Agregar posición absoluta
     zIndex: 1, // Establecer el valor de zIndex para controlar la superposición
   };
+  
   const [editedUserInfo, setEditedUserInfo] = useState({
     weight: '',
     height: '',
@@ -210,11 +192,73 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const [userInfo, setUserInfo] = useState({
-    weight: '82',
-    height: '180',
-    age: '21',
-    gender: 'masculino',
+    weight: '',
+    height: '',
+    age: '',
+    gender: '',
   });
+
+  useEffect(() => {
+    if (rutt) {
+      axios
+        .get(`http://192.168.1.6:3000/api/userData/${rutt}`)
+        .then((response) => {
+          if (response.status === 200 && response.data.userData) {
+            setUserInfo(response.data.userData);
+          } else {
+            console.error('Datos de usuario no encontrados');
+            
+            alert('Datos de usuario no encontrados');
+          }
+        })
+        .catch((error) => {
+          
+          
+          setWelcomeMessage("Bienvenido a CeFan. Por favor, ingrese sus datos corporales.");
+          setWelcomeModalVisible(true);
+        });
+    }
+  }, [rutt]);
+  
+  useEffect(() => {
+    if (userInfo && userInfo.weight && userInfo.height && userInfo.gender && userInfo.age) {
+      calcularResultados(); 
+    }
+  }, [userInfo]);
+
+  const [resultadoCalculo, setResultadoCalculo] = useState(null);
+
+  const calcularResultados = () => {
+   
+  
+    const peso = parseFloat(userInfo.weight);
+    const alturaCm = parseFloat(userInfo.height);
+    
+    
+    
+  
+    const imc = calcularIMC(peso, alturaCm);
+    
+    const genero = userInfo.gender.toLowerCase();
+    const edad = parseInt(userInfo.age);
+  
+    
+  
+    const tmb = calcularTMB(peso, alturaCm, edad, genero);
+    
+    const diferenciaPesoIdeal = calcularDiferenciaPesoIdeal(peso, alturaCm);
+  
+    setResultadoCalculo({
+      imc,
+      evaluarIMC: evaluarIMC(imc),
+      tmb: tmb !== null ? tmb.toFixed(2) : null,
+      pesoIdeal: diferenciaPesoIdeal ? diferenciaPesoIdeal[0].toFixed(2) : null,
+      diferenciaPesoIdeal: diferenciaPesoIdeal ? diferenciaPesoIdeal[1].toFixed(2) : null,
+    });
+  };
+  
+  
+
 
 
   return (
@@ -349,6 +393,16 @@ const HomeScreen = ({ navigation }) => {
           </>
         )}
       </View>
+
+      <Modal isVisible={welcomeModalVisible}>
+       <View style={styles.logoutModal}>
+            <Text style={styles.logoutModalText}>{welcomeMessage}</Text>
+            <TouchableOpacity style={styles.logoutModalButton} onPress={() => setWelcomeModalVisible(false)}>
+              <Text style={styles.logoutModalButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
 
 
       <Modal isVisible={isLogoutModalVisible}>
