@@ -97,6 +97,16 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('HorasMedicas', { usuario, rutt });
   };
 
+  const navigateToMisHoras = () => {
+    toggleMenu();
+    navigation.navigate('MisHora', { usuario, rutt });
+  };
+
+  const navigateToEvolucion = () => {
+    toggleMenu();
+    navigation.navigate('Evolucion', { usuario, rutt });
+  };
+
   const showLogoutModal = () => {
     setLogoutModalVisible(true);
   };
@@ -171,7 +181,7 @@ const HomeScreen = ({ navigation }) => {
         return; 
       }
 
-      const response = await fetch('http://192.168.1.8:3000/api/saveUserData', {
+      const response = await fetch('http://192.168.1.6:3000/api/saveUserData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -247,7 +257,7 @@ const HomeScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.logoutButton} onPress={showLogoutModal}>
         <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
       </TouchableOpacity>
-      <Animated.View style={[styles.menuOptions, menuOptionsStyle, slideInStyle]}>
+      <Animated.View style={[styles.menuOptions, slideInStyle]}>
         <View style={styles.menuOptionContainer}>
           <TouchableOpacity style={styles.menuOption} onPress={navigateToProfile}>
             <Text style={styles.menuOptionText}>Perfil</Text>
@@ -255,10 +265,10 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.menuOption} onPress={navigateToHorasMedicas}>
             <Text style={styles.menuOptionText}>Horas Medicas</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menuOption} onPress={toggleMenu}>
-            <Text style={styles.menuOptionText}>Medicamentos</Text>
+          <TouchableOpacity style={styles.menuOption} onPress={navigateToMisHoras}>
+            <Text style={styles.menuOptionText}>Mis Horas</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menuOption} onPress={toggleMenu}>
+          <TouchableOpacity style={styles.menuOption} onPress={navigateToEvolucion}>
             <Text style={styles.menuOptionText}>Evolucion Medica</Text>
           </TouchableOpacity>
         </View>
@@ -397,20 +407,28 @@ const styles = StyleSheet.create({
     top: 10,
     left: -25,
   },
+   menuOption: {
+    backgroundColor: '#00ADB5', 
+    borderRadius: 15, 
+    marginTop: 10,
+    padding: 10, 
+    opacity: 0.9, 
+    shadowColor: '#00ADB5', 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowRadius: 5,
+    elevation: 5, 
+    zIndex: 1, 
+  },
   menuOptions: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingHorizontal: 20,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    
   },
   menuOptionContainer: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },
-  menuOption: {
-    paddingVertical: 20,
-    borderBottomColor: '#333',
-    borderBottomWidth: 1,
-  },
+
   menuOptionText: {
     fontSize: 18,
     color: 'white',

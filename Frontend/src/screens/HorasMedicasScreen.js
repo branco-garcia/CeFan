@@ -14,7 +14,7 @@ const HorasMedicasScreen = ({ route }) => {
 
   const obtenerCitasDisponibles = async () => {
     try {
-      const response = await axios.get('http://192.168.1.8:3000/api/citas/disponibles');
+      const response = await axios.get('http://192.168.1.6:3000/api/citas/disponibles');
       const citas = response.data.citas;
       setCitasDisponibles(citas);
     } catch (error) {
@@ -24,7 +24,7 @@ const HorasMedicasScreen = ({ route }) => {
 
   const reservarCita = async (citaId) => {
     try {
-      const response = await axios.post('http://192.168.1.8:3000/api/citas/reservar', {
+      const response = await axios.post('http://192.168.1.6:3000/api/citas/reservar', {
         citaId,
         pacienteId: rutt,
       });
@@ -58,6 +58,9 @@ const HorasMedicasScreen = ({ route }) => {
           >
             <Text style={[styles.citaText, isSelected(cita) && styles.selectedCitaText]}>
               Doctor: {cita.doctor}
+            </Text>
+            <Text style={[styles.citaText, isSelected(cita) && styles.selectedCitaText]}>
+              Especialidad: {cita.especialidad}
             </Text>
             <Text style={[styles.citaText, isSelected(cita) && styles.selectedCitaText]}>
               Fecha: {cita.fecha}

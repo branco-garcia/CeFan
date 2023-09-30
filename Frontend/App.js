@@ -7,6 +7,8 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import HorasMedicasScreen from './src/screens/HorasMedicasScreen';
+import MisHoras from './src/screens/MisHoras';
+import Evolucion from './src/screens/Evolucion';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,8 @@ function App() {
         <Stack.Screen name="Inicio" component={HomeScreen} />
         <Stack.Screen name="Perfil" component={ProfileScreen} />
         <Stack.Screen name="HorasMedicas" component={HorasMedicasScreen} />
+        <Stack.Screen name="MisHora" component={MisHoras} />
+        <Stack.Screen name="Evolucion" component={Evolucion} />
         {/* Agrega más pantallas aquí si es necesario */}
       </Stack.Navigator>
     </NavigationContainer>

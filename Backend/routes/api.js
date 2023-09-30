@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const UserData = require('../models/userData');
 const Cita = require('../models/cita');
+const Evolucion = require('../models/evolucion');
 
 
 router.post('/register', async (req, res) => {
@@ -111,6 +112,41 @@ router.post('/citas/reservar', async (req, res) => {
   }
 });
 
+router.get('/citas/disponibles/:rutt', async (req, res) => {
+  try {
+    const rutPaciente = req.params.rutt;
+
+    // Consulta las citas asociadas con el rut del paciente
+    const citasDelPaciente = await Cita.find({ pacienteRut: rutPaciente });
+
+    if (citasDelPaciente.length === 0) {
+      res.status(200).json({ message: 'No se encontraron citas asociadas a este paciente' });
+    } else {
+      res.status(200).json({ citas: citasDelPaciente });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener citas asociadas al paciente' });
+  }
+});
+
+router.get('/evoluciones/:rutt', async (req, res) => {
+  try {
+    const rutPaciente = req.params.rutt;
+
+    // Consulta las evoluciones médicas asociadas con el rut del paciente
+    const evolucionesDelPaciente = await Evolucion.find({ pacienteRut: rutPaciente });
+
+    if (evolucionesDelPaciente.length === 0) {
+      res.status(200).json({ message: 'No se encontraron evoluciones médicas asociadas a este paciente' });
+    } else {
+      res.status(200).json({ evoluciones: evolucionesDelPaciente });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener evoluciones médicas asociadas al paciente' });
+  }
+});
 
 
 
