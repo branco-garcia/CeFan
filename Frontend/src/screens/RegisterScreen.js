@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Image, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { styles } from '../styles/StyledRegister';
+import { loginValidationSchema } from '../ValidationSchemas/login';
+import * as yup from 'yup'
+
 
 import RNModal from 'react-native-modal'; // Cambia el nombre de la importación a RNModal
 
@@ -15,6 +18,8 @@ const RegisterScreen = () => {
 
   const handleRegister = async () => {
     try {
+
+      await loginValidationSchema.validate({correo,contrasena,rut});
       const response = await axios.post('http://45.236.129.38:3000/api/register', {
         nombre,
         rut,
@@ -29,7 +34,11 @@ const RegisterScreen = () => {
         console.error('Error en el registro:', response.data);
       }
     } catch (error) {
-      console.error('Error en el registro:', error);
+      if(error instanceof yup.ValidationError){
+        alert(error.message);
+      } else {
+        console.error('Error en el registro:', error);
+      }      
     }
   };
 
