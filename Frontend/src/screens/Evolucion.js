@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { styles } from '../styles/StyledEvolucion';
+
 
 const Evolucion = ({ route }) => {
   const { usuario, rutt } = route.params;
@@ -11,7 +13,7 @@ const Evolucion = ({ route }) => {
 
   useEffect(() => {
     axios
-      .get(`http://192.168.1.6:3000/api/evoluciones/${rutt}`)
+      .get(`http://45.236.129.38:3000/api/evoluciones/${rutt}`)
       .then((response) => {
         if (response.data.evoluciones) {
           setEvoluciones(response.data.evoluciones);
@@ -82,45 +84,5 @@ const Evolucion = ({ route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#252A31',
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#00ADB5',
-  },
-  evolucionContainer: {
-    backgroundColor: '#00ADB5',
-    padding: 16,
-    marginVertical: 8,
-    borderRadius: 8,
-  },
-  text: {
-    fontSize: 20,
-  },
-  // Estilos del modal
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
-  closeButton: {
-    fontSize: 20,
-    color: 'white',
-    marginBottom: 16,
-  },
-  modalText: {
-    fontSize: 20,
-    color: 'white',
-    marginBottom: 16,
-  },
-});
 
 export default Evolucion;

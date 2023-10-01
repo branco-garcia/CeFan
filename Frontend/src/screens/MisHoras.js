@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { styles } from '../styles/StyledHoras';
 
 const MisHoras = ({ route }) => {
   const { usuario, rutt } = route.params;
@@ -8,7 +9,7 @@ const MisHoras = ({ route }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://192.168.1.6:3000/api/citas/disponibles/${rutt}`)
+    axios.get(`http://45.236.129.38:3000/api/citas/disponibles/${rutt}`)
       .then((response) => {
         console.log(rutt)
         if (response.data.citas) {
@@ -46,28 +47,5 @@ const MisHoras = ({ route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#252A31',
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#00ADB5',
-  },
-  citaContainer: {
-    backgroundColor: '#00ADB5',
-    padding: 16,
-    marginVertical: 8,
-    borderRadius: 8,
-  },
-  text: {
-    fontSize: 20,
-  },
-});
 
 export default MisHoras;
