@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, BackHandler } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { styles } from '../styles/StyledHoras';
 
 const MisHoras = ({ route }) => {
+  const navigation = useNavigation();
   const { usuario, rutt } = route.params;
   const [citas, setCitas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +26,18 @@ const MisHoras = ({ route }) => {
         setLoading(false); //
       });
   }, [rutt]);
+
+  //Boton hacia atras
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.goBack(); 
+      return true;
+    });
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
 
   return (
     <View style={styles.container}>

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, Button, BackHandler } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { styles } from '../styles/StyledHorasMedicas';
 
 const HorasMedicasScreen = ({ route }) => {
+  const navigation = useNavigation();
   const { usuario, rutt } = route.params;
   const [citasDisponibles, setCitasDisponibles] = useState([]);
   const [citaSeleccionada, setCitaSeleccionada] = useState(null);
@@ -12,6 +14,18 @@ const HorasMedicasScreen = ({ route }) => {
   useEffect(() => {
     obtenerCitasDisponibles();
   }, []);
+
+  //Boton hacia atras
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.goBack(); 
+      return true;
+    });
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
 
   const obtenerCitasDisponibles = async () => {
     try {

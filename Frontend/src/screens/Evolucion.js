@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Modal, TouchableOpacity, BackHandler } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { styles } from '../styles/StyledEvolucion';
 
 
 const Evolucion = ({ route }) => {
+  const navigation = useNavigation();
   const { usuario, rutt } = route.params;
   const [evoluciones, setEvoluciones] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +30,20 @@ const Evolucion = ({ route }) => {
       });
   }, [rutt]);
 
+
+  //Boton hacia atras
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.goBack(); 
+      return true;
+    });
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [navigation]);
+
+  
   const openModal = (evolucion) => {
     setSelectedEvolucion(evolucion);
     setModalVisible(true);
