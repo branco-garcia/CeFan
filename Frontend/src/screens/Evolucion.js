@@ -79,11 +79,12 @@ const Evolucion = ({ route }) => {
 
       {/* Modal */}
       <Modal
-  visible={isModalVisible}
-  animationType="slide"
-  transparent={true}
-  onRequestClose={closeModal}
->
+        visible={isModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={closeModal}
+      >
+  <View style= { { backgroundColor: '#00000080',flex: 1,}}>      
   <View style={styles.modalContainer}>
     <TouchableOpacity onPress={closeModal}>
       <Text style={styles.closeButton}>Cerrar</Text>
@@ -95,6 +96,7 @@ const Evolucion = ({ route }) => {
         {/* Otras secciones */}
       </View>
     )}
+   </View> 
   </View>
 </Modal>
     </View>

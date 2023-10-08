@@ -20,17 +20,25 @@ export const styles = StyleSheet.create({
     text: {
       fontSize: 20,
     },
-    // Estilos del modal
     modalContainer: {
-      flex: 1,
+      flex: 0,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+      backgroundColor: '#00ADB5', 
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      borderRadius: 10,
+      marginTop: 250,
+      marginHorizontal: 25
     },
     closeButton: {
       fontSize: 20,
-      color: 'white',
+      color: 'black',
       marginBottom: 16,
+      backgroundColor: 'white',
+      paddingVertical: 5,
+      paddingHorizontal: 15,
+      borderRadius: 5,
     },
     modalText: {
       fontSize: 20,

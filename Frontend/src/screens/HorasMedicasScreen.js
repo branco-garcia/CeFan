@@ -59,7 +59,7 @@ const HorasMedicasScreen = ({ route }) => {
   const isSelected = (cita) => citaSeleccionada && citaSeleccionada._id === cita._id;
 
   return (
-    <ScrollView>
+    <ScrollView style = {{backgroundColor: '#252A31'}}>
       <View style={styles.container}>
         <Text style={styles.title}>Horas Médicas Disponibles</Text>
         <Text style={styles.description}> {usuario}, Elige tu Hora</Text>
