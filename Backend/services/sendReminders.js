@@ -29,8 +29,8 @@ const sendReminders = async () => {
         fecha: {
            $gte: manana.toISOString(),
            $lte: fechaLuegoDeManana.toISOString(),
-        },
-        reservada: true,
+           },
+          reservada: true,
         //especialidad: "Pediatría",
       });
       

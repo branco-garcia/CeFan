@@ -11,14 +11,15 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-
 app.use('/api', apiRoutes);
 
 
-
+//cron.schedule('0 8 * * *', () => {
+  //console.log('Ejecutando sendReminders a las 8:00 AM');
+  //sendReminders();
+//});
 sendReminders();
 
-// Puerto de escucha
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`);
