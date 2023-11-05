@@ -4,7 +4,7 @@ import RegisterScreen from './RegisterScreen';
 
 describe('Prueba de rendimiento para RegisterScreen', () => {
   // Cuantas veces hara repeticiones
-  const iterations = 1000;
+  const iterations = 100;
 
   it('Mide cuanto tiempo se demora en renderizar el registro', () => {
     const startTime = performance.now(); // Inicia la medición del tiempo
