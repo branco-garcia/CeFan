@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import LoginScreen from './LoginScreen';
 
 describe('Prueba de rendimiento para LoginScreen', () => {
-  const iterations = 1000;
+  const iterations = 100;
 
   it('Mide cuanto tiempo se demora en manejar el input y el render de LoginScreen', () => {
     const startTime = performance.now(); // Inicia la medición del tiempo

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { NavigationContainer } from '@react-navigation/native'; // Importa NavigationContainer
+import { NavigationContainer } from '@react-navigation/native';
 import ProfileScreen from './ProfileScreen';
 
 describe('Prueba de rendimiento para ProfileScreen', () => {
@@ -25,5 +25,4 @@ describe('Prueba de rendimiento para ProfileScreen', () => {
     console.log(`Tiempo que se demora en renderizar ProfileScreen: ${averageTime} milisegundos`);
   });
 
-  // Agrega más pruebas de rendimiento para otras acciones, si es necesario
 });
